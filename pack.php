@@ -12,7 +12,7 @@ if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
 
 // autoload
 $autoload = require __DIR__ . '/nilpack/vendor/autoload.php';
-$autoload->addPsr4(__NAMESPACE__ . '\\', __DIR__ . '\\nilpack\\src');
+$autoload->addPsr4(__NAMESPACE__ . '\\', __DIR__ . '/nilpack/src');
 
 
 // 生成文件
