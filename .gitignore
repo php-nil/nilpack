@@ -1,0 +1,6 @@
+/nilpack.phar
+/nilpack/vendor/
+/nilpack/composer.lock
+/.git/
+.DS_Store
+Thumbs.db

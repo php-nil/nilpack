@@ -1,0 +1,12 @@
+{
+    "require": {
+        "symfony/filesystem": "^8.1",
+        "symfony/console": "^8.1",
+        "symfony/finder": "^8.1",
+        "symfony/var-exporter": "^8.1",
+        "symfony/string": "^8.1",
+        "symfony/service-contracts": "^3.7",
+        "composer/pcre": "^3.3",
+        "composer/class-map-generator": "^1.7"
+    }
+}
