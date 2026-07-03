@@ -38,32 +38,10 @@ jobs:
           path: nilpack.phar
 
       - name: Upload to release
-        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: |
+            自动构建版本
           files: nilpack.phar
-
-      - name: Create release on tag push
-        id: create_release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: release } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: context.ref.replace('refs/tags/', ''),
-              name: context.ref.replace('refs/tags/', ''),
-              body: '自动构建版本'
-            });
-            core.setOutput('upload_url', release.upload_url);
-            console.log('Created release:', release.html_url);
-
-      - name: Upload asset to release on tag push
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: nilpack.phar
-          asset_name: nilpack.phar
-          asset_content_type: application/octet-stream
