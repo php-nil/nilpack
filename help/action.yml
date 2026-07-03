@@ -1,0 +1,41 @@
+name: 'Setup Nilpack'
+description: 'Download and setup nilpack.phar for composer packaging'
+inputs:
+  version:
+    description: 'Nilpack version to use (e.g., v1.0.0, latest)'
+    required: false
+    default: 'latest'
+  owner:
+    description: 'GitHub owner of the nilpack repository'
+    required: false
+    default: ''
+outputs:
+  path:
+    description: 'Path to the downloaded nilpack.phar'
+    value: ${{ steps.download.outputs.path }}
+
+runs:
+  using: 'composite'
+  steps:
+    - id: download
+      run: |
+        OWNER="${{ inputs.owner }}"
+        if [ -z "$OWNER" ]; then
+          REMOTE=$(git remote get-url origin 2>/dev/null || true)
+          if echo "$REMOTE" | grep -q "github"; then
+            OWNER=$(echo "$REMOTE" | sed -E 's|github\.com[:/]([^/]+)/.*|\1|')
+          else
+            OWNER="nilpack"
+          fi
+        fi
+
+        TAG="${{ inputs.version }}"
+        if [ "$TAG" = "latest" ]; then
+          TAG=$(curl -s "https://api.github.com/repos/$OWNER/nilpack/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+        fi
+
+        echo "Downloading nilpack.phar from $OWNER/nilpack@$TAG..."
+        curl -L -o nilpack.phar "https://github.com/$OWNER/nilpack/releases/download/$TAG/nilpack.phar"
+        chmod +x nilpack.phar
+        echo "path=$(pwd)/nilpack.phar" >> $GITHUB_OUTPUT
+      shell: bash

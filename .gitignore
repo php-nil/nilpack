@@ -4,3 +4,4 @@
 /.git/
 .DS_Store
 Thumbs.db
+/nil-phar-runtime/

@@ -41,3 +41,46 @@ php -d phar.readonly=0 pack.php
 ## 配置
 
 通过 `nil.json` 配置打包选项。
+
+## 在其他项目中使用
+
+### GitHub Action
+
+在其他项目的 workflow 中使用：
+
+```yaml
+- name: Setup Nilpack
+  uses: your-username/nilpack@v1
+  with:
+    version: 'latest'
+
+- name: Run nilpack
+  run: php nilpack.phar composer your-package
+```
+
+### 下载脚本
+
+**Shell**:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/your-username/nilpack/main/download-nilpack.sh | bash
+```
+
+**PHP**:
+
+```bash
+php -r "copy('https://raw.githubusercontent.com/your-username/nilpack/main/download-nilpack.php', 'download-nilpack.php'); php download-nilpack.php;"
+```
+
+### 在 Workflow 中手动下载
+
+```yaml
+- name: Download nilpack
+  run: |
+    TAG=$(curl -s https://api.github.com/repos/your-username/nilpack/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+    curl -L -o nilpack.phar "https://github.com/your-username/nilpack/releases/download/$TAG/nilpack.phar"
+    chmod +x nilpack.phar
+
+- name: Package with nilpack
+  run: php nilpack.phar composer your-package
+```
