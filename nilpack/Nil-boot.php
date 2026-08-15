@@ -12,7 +12,7 @@ if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
 
 // autoload
 $autoload = require __DIR__ . '/vendor/autoload.php';
-$autoload->addPsr4(__NAMESPACE__ . '\\', __DIR__ . '\\src');
+$autoload->addPsr4(__NAMESPACE__ . '\\', __DIR__ . '/src');
 
 $application = new Application('Nil Pack Tool','2.0');
 $application->addCommand(new Composer);
